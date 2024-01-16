@@ -20,12 +20,14 @@ diff --git a/${htmlPath} b/${htmlPath}
 index eb525bd..e0d57bf 100644
 --- a/${htmlPath}
 +++ b/${htmlPath}
-@@ -69,4 +69,${toString (4 + length patchLines)} @@
- 
- 	<!-- Startup (do not modify order of script tags!) -->
- 	<script src="workbench.js"></script>
+@@ -62,6 +62,${toString (6 + length patchLines)} @@
+ 					tokenizeToString
+ 				;
+ 		"/>
 ${lib.strings.concatStringsSep "\n" patchLines}
- </html>
+ 	</head>
+ 
+ 	<body aria-label="">
         '';
 
       patchFile = pkgs.writeText "injected.patch" patch;
