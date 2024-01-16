@@ -7,10 +7,8 @@
     patches = let 
         htmlPath = "resources/app/out/vs/code/electron-sandbox/workbench/workbench.html";
 
-        inline = path: builtins.replaceStrings ["\n"] [""] (builtins.readFile path);
-
-        mkCss = path: "<style>${inline path}</style>";
-        mkJs = path: "<script>${inline path}</script>";
+        mkCss = path: "<link rel=\"stylesheet\" type=\"text/css\" href=\"vscode-file://${path}\">";
+        mkJs = path: "<script type=\"text/javascript\" src=\"vscode-file://${path}\"></script>";
 
         rawLines = (map mkCss rice.css or []) ++ (map mkJs rice.js or []);
         patchLines = map (rawLine: "+	${rawLine}") rawLines; 
