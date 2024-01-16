@@ -17,6 +17,10 @@
 
           lib = pkgs.lib;
         });
+
+        testRicedVscodium = ricedVscodium {
+          css = [./test.css];
+        };
       });
     };
 }
