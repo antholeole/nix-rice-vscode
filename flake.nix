@@ -17,9 +17,6 @@
 
           lib = pkgs.lib;
         });
-
-        # just making sure it works
-        testRicedVscodium = ricedVscodium {};
       });
     };
 }
