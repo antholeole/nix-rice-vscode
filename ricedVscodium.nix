@@ -1,9 +1,13 @@
 { 
     lib, 
     pkgs, 
-    rice ? { css = []; js = []; }, 
+    pkg,
+    rice ? { 
+        css = []; 
+        js = [];
+    }, 
     ... 
-}: pkgs.vscodium.overrideAttrs {
+}: pkg.overrideAttrs {
     patches = let 
         htmlPath = "resources/app/out/vs/code/electron-sandbox/workbench/workbench.html";
 
