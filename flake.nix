@@ -12,9 +12,9 @@
       packages = eachSystem (system: let 
         pkgs = nixpkgs.legacyPackages.${system};
       in rec {
-        ricedVscodium = settings: (ricedVscodiumBuilder {
+        ricedVscodium = settings: (ricedVscodiumBuilder ({
           inherit pkgs;
-        } // settings);
+        } // settings));
 
         testRicedVscodium = ricedVscodium {
           css = [./test.css];
