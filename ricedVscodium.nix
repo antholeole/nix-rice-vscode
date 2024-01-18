@@ -10,7 +10,7 @@
     htmlPath = "resources/app/out/vs/code/electron-sandbox/workbench/workbench.html";
 
     files = with builtins; let 
-        assetsPath = "lib/vscode/resources/app";
+        assetsPath = "lib/vscode/resources/app/out/vs/code/electron-sandbox/workbench/lib/vscode/resources/app";
 
         mapPath = fileType: files: map (old: {
             inherit old;
@@ -29,7 +29,7 @@ in pkg.overrideAttrs {
 
     patches = with builtins; let 
         mkCss = path: "<link rel=\"stylesheet\" type=\"text/css\" href=\"${path.new}\">";
-        mkJs = path: "<script type=\"text/javascript\" src=\"${path.new}\"></script>";
+        m:kJs = path: "<script type=\"text/javascript\" src=\"${path.new}\"></script>";
 
         rawLines = (map mkCss files.css) ++ (map mkJs files.js);
         patchLines = map (rawLine: "+	${rawLine}") rawLines; 
