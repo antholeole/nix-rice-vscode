@@ -13,7 +13,7 @@ in pkg.overrideAttrs {
         mkCss = path: "<link rel=\"stylesheet\" type=\"text/css\" href=\"${path}\">";
         mkJs = path: "<script type=\"text/javascript\" src=\"${path}\"></script>";
 
-        rawLines = (map mkCss css or []) ++ (map mkJs js or []);
+        rawLines = (map mkCss css) ++ (map mkJs js);
         patchLines = map (rawLine: "+	${rawLine}") rawLines; 
 
         patch = with builtins; ''
