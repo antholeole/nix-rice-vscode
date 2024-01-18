@@ -2,7 +2,7 @@
     pkgs, 
     pkg,
     css ? [],
-    js ? []
+    js ? [],
     ... 
 }: let
 	lib = pkgs.lib;
