@@ -29,7 +29,7 @@ in pkg.overrideAttrs {
 
     patches = with builtins; let 
         mkCss = path: "<link rel=\"stylesheet\" type=\"text/css\" href=\"${path.new}\">";
-        m:kJs = path: "<script type=\"text/javascript\" src=\"${path.new}\"></script>";
+        mkJs = path: "<script type=\"text/javascript\" src=\"${path.new}\"></script>";
 
         rawLines = (map mkCss files.css) ++ (map mkJs files.js);
         patchLines = map (rawLine: "+	${rawLine}") rawLines; 
