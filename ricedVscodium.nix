@@ -1,5 +1,4 @@
 { 
-    lib, 
     pkgs, 
     pkg,
     rice ? { 
@@ -7,7 +6,9 @@
         js = [];
     }, 
     ... 
-}: pkg.overrideAttrs {
+}: let
+	lib = pkgs.lib;
+in pkg.overrideAttrs {
     patches = let 
         htmlPath = "resources/app/out/vs/code/electron-sandbox/workbench/workbench.html";
 
