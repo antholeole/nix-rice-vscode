@@ -14,29 +14,27 @@
 
         mapPath = fileType: files: map (old: {
             inherit old;
-            new = "${assetsPath}/${builins.hashFile "sha256" old}.${fileType}";
+            new = "${assetsPath}/${builtins.hashFile "sha256" old}.${fileType}";
         }) files;
     in {
         css = mapPath "css" css;
         js = mapPath "js" js;
     };
-
-    # We have to put the files in one of the directories under /gulpfile.vscode.js#L210
-
-    mkCss = path: "<link rel=\"stylesheet\" type=\"text/css\" href=\"${path}\">";
-    mkJs = path: "<script type=\"text/javascript\" src=\"${path}\"></script>";
 in pkg.overrideAttrs {
     postInstall = let 
         allFiles = files.css ++ files.js;
-        cpCmds = builtins.map (file: "cp ${file.old} ${file.new}") allFiles;        
+        cpCmds = builtins.map (file: "cp ${file.old} $out/${file.new}") allFiles;        
 
     in lib.strings.concatStringsSep "\n" cpCmds;
 
-    patches = let 
-        rawLines = (map mkCss files.css.new) ++ (map mkJs files.js.new);
+    patches = with builtins; let 
+        mkCss = path: "<link rel=\"stylesheet\" type=\"text/css\" href=\"${path.new}\">";
+        mkJs = path: "<script type=\"text/javascript\" src=\"${path.new}\"></script>";
+
+        rawLines = (map mkCss files.css) ++ (map mkJs files.js);
         patchLines = map (rawLine: "+	${rawLine}") rawLines; 
 
-        patch = with builtins; ''
+        patch =''
 diff --git a/${htmlPath} b/${htmlPath}
 index eb525bd..e0d57bf 100644
 --- a/${htmlPath}
