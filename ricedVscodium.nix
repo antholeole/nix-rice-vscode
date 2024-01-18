@@ -6,17 +6,35 @@
     ... 
 }: let
 	lib = pkgs.lib;
+
+    htmlPath = "resources/app/out/vs/code/electron-sandbox/workbench/workbench.html";
+
+    files = with builtins; let 
+        assetsPath = "lib/vscode/resources/app";
+
+        mapPath = fileType: files: map (old: {
+            inherit old;
+            new = "${assetsPath}/${builtins.hashFile "sha256" old}.${fileType}";
+        }) files;
+    in {
+        css = mapPath "css" css;
+        js = mapPath "js" js;
+    };
 in pkg.overrideAttrs {
-    patches = let 
-        htmlPath = "resources/app/out/vs/code/electron-sandbox/workbench/workbench.html";
+    postInstall = let 
+        allFiles = files.css ++ files.js;
+        cpCmds = builtins.map (file: "cp ${file.old} $out/${file.new}") allFiles;        
 
-        mkCss = path: "<link rel=\"stylesheet\" type=\"text/css\" href=\"${path}\">";
-        mkJs = path: "<script type=\"text/javascript\" src=\"${path}\"></script>";
+    in lib.strings.concatStringsSep "\n" cpCmds;
 
-        rawLines = (map mkCss css) ++ (map mkJs js);
+    patches = with builtins; let 
+        mkCss = path: "<link rel=\"stylesheet\" type=\"text/css\" href=\"${path.new}\">";
+        mkJs = path: "<script type=\"text/javascript\" src=\"${path.new}\"></script>";
+
+        rawLines = (map mkCss files.css) ++ (map mkJs files.js);
         patchLines = map (rawLine: "+	${rawLine}") rawLines; 
 
-        patch = with builtins; ''
+        patch =''
 diff --git a/${htmlPath} b/${htmlPath}
 index eb525bd..e0d57bf 100644
 --- a/${htmlPath}

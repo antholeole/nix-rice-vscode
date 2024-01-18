@@ -18,6 +18,7 @@
 
         testRicedVscodium = ricedVscodium {
           css = [./test.css];
+          pkg = pkgs.vscodium;
         };
       });
     };
