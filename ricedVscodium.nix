@@ -10,7 +10,7 @@
     htmlPath = "resources/app/out/vs/code/electron-sandbox/workbench/workbench.html";
 
     files = with builtins; let 
-        assetsPath = "TODO";
+        assetsPath = "lib/vscode/resources/app";
 
         mapPath = fileType: files: map (old: {
             inherit old;
