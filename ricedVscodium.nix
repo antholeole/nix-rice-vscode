@@ -12,8 +12,8 @@ in pkg.overrideAttrs {
     patches = let 
         htmlPath = "resources/app/out/vs/code/electron-sandbox/workbench/workbench.html";
 
-        mkCss = path: "<link rel=\"stylesheet\" type=\"text/css\" href=\"vscode-file://vscode-app${path}\">";
-        mkJs = path: "<script type=\"text/javascript\" src=\"vscode-file://vscode-app${path}\"></script>";
+        mkCss = path: "<link rel=\"stylesheet\" type=\"text/css\" href=\"${path}\">";
+        mkJs = path: "<script type=\"text/javascript\" src=\"${path}\"></script>";
 
         rawLines = (map mkCss rice.css or []) ++ (map mkJs rice.js or []);
         patchLines = map (rawLine: "+	${rawLine}") rawLines; 
