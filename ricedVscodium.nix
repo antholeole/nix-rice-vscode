@@ -1,10 +1,8 @@
 { 
     pkgs, 
     pkg,
-    rice ? { 
-        css = []; 
-        js = [];
-    }, 
+    css ? [],
+    js ? []
     ... 
 }: let
 	lib = pkgs.lib;
@@ -15,7 +13,7 @@ in pkg.overrideAttrs {
         mkCss = path: "<link rel=\"stylesheet\" type=\"text/css\" href=\"${path}\">";
         mkJs = path: "<script type=\"text/javascript\" src=\"${path}\"></script>";
 
-        rawLines = (map mkCss rice.css or []) ++ (map mkJs rice.js or []);
+        rawLines = (map mkCss css or []) ++ (map mkJs js or []);
         patchLines = map (rawLine: "+	${rawLine}") rawLines; 
 
         patch = with builtins; ''
