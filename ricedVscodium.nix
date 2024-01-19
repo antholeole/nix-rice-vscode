@@ -22,7 +22,7 @@
 in pkg.overrideAttrs {
     postInstall = let 
         allFiles = files.css ++ files.js;
-        cpCmds = builtins.map (file: "cp ${file.old} $out/${file.new}") allFiles;        
+        cpCmds = builtins.map (file: "cp ${file.old} $out/${assetsPath}/${file.new}") allFiles;        
 
     in lib.strings.concatStringsSep "\n" cpCmds;
 
