@@ -8,13 +8,12 @@
 	lib = pkgs.lib;
 
     htmlPath = "resources/app/out/vs/code/electron-sandbox/workbench/workbench.html";
+    assetsPath = "lib/vscode/resources/app/out/vs/code/electron-sandbox/workbench";
 
     files = with builtins; let 
-        assetsPath = "lib/vscode/resources/app/out/vs/code/electron-sandbox/workbench";
-
         mapPath = fileType: files: map (old: {
             inherit old;
-            new = "${assetsPath}/${builtins.hashFile "sha256" old}.${fileType}";
+            new = "${builtins.hashFile "sha256" old}.${fileType}";
         }) files;
     in {
         css = mapPath "css" css;
